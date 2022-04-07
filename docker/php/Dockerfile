@@ -1,6 +1,8 @@
-FROM php:7.2-cli
+FROM php:8.1-rc-fpm-bullseye
 
-RUN apt-get update && apt-get install -y git unzip curl
+RUN echo 'deb [trusted=yes] https://repo.symfony.com/apt/ /' | tee /etc/apt/sources.list.d/symfony-cli.list \
+ && apt-get update \
+ && apt-get install -y curl git symfony-cli unzip
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -17,18 +19,11 @@ RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/php.ini \
  && echo "display_errors = On" >> /usr/local/etc/php/php.ini \
  && echo "date.timezone=\"Europe/Berlin\"" >> /usr/local/etc/php/php.ini
 
-# install xdebug
-RUN pecl install xdebug && docker-php-ext-enable xdebug \
- && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
- && echo "xdebug.remote_connect_back=1" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
- && echo "xdebug.idekey=\"PHPSTORM\"" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
- && echo "xdebug.remote_port=9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["php","bin/console", "server:run", "0.0.0.0:80"]
+CMD ["symfony","server:start", "--port", "80", "--no-tls"]
 
 VOLUME /www
 WORKDIR /www
