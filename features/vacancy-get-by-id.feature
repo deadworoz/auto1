@@ -5,4 +5,4 @@ Feature: Get vacancy information by its ID
 
     Scenario: Requesting information about position with ID 21
         When an API client sends a request to "/vacancy/21"
-        Then the response should be received
+        Then the response status code should be 200
