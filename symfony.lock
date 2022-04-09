@@ -8,15 +8,6 @@
     "behat/transliterator": {
         "version": "v1.5.0"
     },
-    "friends-of-behat/mink": {
-        "version": "v1.10.0"
-    },
-    "friends-of-behat/mink-browserkit-driver": {
-        "version": "v1.6.1"
-    },
-    "friends-of-behat/mink-extension": {
-        "version": "v2.6.1"
-    },
     "friends-of-behat/symfony-extension": {
         "version": "2.3",
         "recipe": {
@@ -50,9 +41,6 @@
     "psr/log": {
         "version": "2.0.0"
     },
-    "symfony/browser-kit": {
-        "version": "v5.4.3"
-    },
     "symfony/cache": {
         "version": "v5.4.7"
     },
@@ -74,17 +62,11 @@
             "bin/console"
         ]
     },
-    "symfony/css-selector": {
-        "version": "v5.4.3"
-    },
     "symfony/dependency-injection": {
         "version": "v5.4.7"
     },
     "symfony/deprecation-contracts": {
         "version": "v3.0.1"
-    },
-    "symfony/dom-crawler": {
-        "version": "v5.4.6"
     },
     "symfony/dotenv": {
         "version": "v5.4.5"
