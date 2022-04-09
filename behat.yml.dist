@@ -1,0 +1,8 @@
+default:
+    suites:
+        default:
+            contexts:
+                - App\Tests\Behat\VacancyContext                
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension: null
