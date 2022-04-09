@@ -1,4 +1,4 @@
-ID,Job title,Seniority level,Country,City,Salary,Currency,Required skills,Company size,Company domain
+id,jobTitle,seniorityLevel,country,city,salary,currency,requiredSkills,companySize,companyDomain
 1,Senior PHP Developer,Senior,DE,Berlin,747500,SVU,"PHP, Symfony, REST, Unit-testing, Behat, SOLID, Docker, AWS",100-500,Automotive
 2,Middle PHP Developer,Middle,DE,Berlin,632500,SVU,"PHP, Symfony, Unit-testing, SOLID",100-500,Automotive
 3,Junior PHP Developer,Junior,DE,Berlin,517500,SVU,"PHP, LAMP, HTML, CSS, SQL",100-500,Automotive
