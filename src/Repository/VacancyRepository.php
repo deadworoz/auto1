@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Vacancy;
+use App\Enum\City;
 use App\Enum\Country;
 use App\Store\StoreInterface;
 
@@ -38,5 +39,17 @@ class VacancyRepository implements VacancyRepositoryInterface
         };
         
         return $this->store->getRows($byCountryCallback);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findByCity(City $city): array
+    {
+        $byCityCallback = static function (array $row) use ($city) {            
+            return $row['city'] === $city->getName();
+        };
+        
+        return $this->store->getRows($byCityCallback);
     }
 }

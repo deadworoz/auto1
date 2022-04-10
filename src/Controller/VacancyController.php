@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DomainService\VacancySearcher;
-use App\DTO\VacancyListRequest;
+use App\Enum\City;
 use App\Enum\Country;
 use App\Enum\VacancySortField;
 use App\Repository\VacancyRepositoryInterface;
@@ -37,6 +37,13 @@ class VacancyController extends AbstractBaseController
     public function getByCountry(Country $countryCode, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
         $vacancies = $searcher->findByCountry($countryCode, $sortBy ?? VacancySortField::SALARY);
+        return $this->json(['items' => $vacancies]);
+    }
+
+    #[Route('/by-city/{city}', name:'by_city')]
+    public function getByCity(City $city, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
+    {
+        $vacancies = $searcher->findByCity($city, $sortBy ?? VacancySortField::SALARY);
         return $this->json(['items' => $vacancies]);
     }
 

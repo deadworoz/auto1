@@ -2,7 +2,9 @@
 
 namespace App\Enum;
 
-enum City: string
+use App\ArgumentResolver\ResolvableEnumInterface;
+
+enum City: string implements ResolvableEnumInterface
 {
     case BERLIN = 'Berlin';
     case HAMBURG = 'Hamburg';

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Vacancy;
+use App\Enum\City;
 use App\Enum\Country;
 
 interface VacancyRepositoryInterface
@@ -15,4 +16,9 @@ interface VacancyRepositoryInterface
      * @return Vacancy[]
      */
     public function findByCountry(Country $country): array;
+
+    /**
+     * @return Vacancy[]
+     */
+    public function findByCity(City $city): array;
 }
