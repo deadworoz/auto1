@@ -16,6 +16,7 @@ services:
     App\:
         resource: '../src/'
         exclude:
+            - '../src/ArgumentResolver/BackedEnumResolver.php'
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Enum/'
@@ -27,6 +28,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\ArgumentResolver\BackedEnumResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 200 }
+
     App\Repository\VacancyRepositoryInterface:
         class: App\Repository\VacancyRepository
         arguments:

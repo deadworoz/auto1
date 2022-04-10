@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Vacancy;
+use App\Enum\Country;
 use App\Store\StoreInterface;
 
 class VacancyRepository implements VacancyRepositoryInterface
@@ -25,5 +26,17 @@ class VacancyRepository implements VacancyRepositoryInterface
         
         $vacancyRows = $this->store->getRows($byIdCallback);
         return count($vacancyRows) > 0 ? Vacancy::fromArray($vacancyRows[0]) : null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findByCountry(Country $country): array
+    {
+        $byCountryCallback = static function (array $row) use ($country) {            
+            return $row['country'] === $country->getCode();
+        };
+        
+        return $this->store->getRows($byCountryCallback);
     }
 }

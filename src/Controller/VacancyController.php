@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\DomainService\VacancySearcher;
+use App\DTO\VacancyListRequest;
+use App\Enum\Country;
+use App\Enum\VacancySortField;
 use App\Repository\VacancyRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,7 +22,7 @@ class VacancyController extends AbstractBaseController
         $this->vacancyRepository = $vacancyRepository;
     }
 
-    #[Route('/{id}', name:'get_by_id')]
+    #[Route('/{id}', name:'by_id')]
     public function getById(int $id): Response
     {
         $vacancy = $this->vacancyRepository->findById($id);
@@ -29,11 +33,11 @@ class VacancyController extends AbstractBaseController
         return $this->json($vacancy);
     }
 
-    #[Route('', name:'get_list')]
-    public function getList(): Response
+    #[Route('/by-country/{countryCode}', name:'by_country')]
+    public function getByCountry(Country $countryCode, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
-        $vacancies = [];
-        return $this->json($vacancies);
+        $vacancies = $searcher->findByCountry($countryCode, $sortBy ?? VacancySortField::SALARY);
+        return $this->json(['items' => $vacancies]);
     }
 
     #[Route('/the-best', name:'get_the_best', priority: 1)]

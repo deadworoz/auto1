@@ -2,7 +2,9 @@
 
 namespace App\Enum;
 
-enum Country: string
+use App\ArgumentResolver\ResolvableEnumInterface;
+
+enum Country: string implements ResolvableEnumInterface
 {
     case GERMANY = 'DE';
     case SPAIN = 'ES';
