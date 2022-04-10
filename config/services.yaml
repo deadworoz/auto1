@@ -18,7 +18,26 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Enum/'
+            - '../src/ResourceProvider/'
+            - '../src/Repository/'
+            - '../src/Store/'
+            - '../src/ValueObject/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Repository\VacancyRepositoryInterface:
+        class: App\Repository\VacancyRepository
+        arguments:
+            $store: '@vacancy.store'
+
+    vacancy.php_resource_provider:
+        class: App\ResourceProvider\FopenResourceProvider        
+        arguments:
+            $resourceName: '%kernel.project_dir%/data/vacancies.csv'    
+
+    vacancy.store:
+        class: App\Store\CsvStore
+        arguments:
+            $provider: '@vacancy.php_resource_provider'
