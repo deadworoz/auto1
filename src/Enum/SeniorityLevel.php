@@ -13,4 +13,20 @@ enum SeniorityLevel: string
     {
         return $this->value;
     }
+
+    public function equalOrNext(SeniorityLevel $other): bool
+    {
+        $diff = $this->toInt() - $other->toInt();
+        return (0 <= $diff) && ($diff <= 1);
+    }
+
+    private function toInt(): int
+    {
+        return match($this) {
+            SeniorityLevel::JUNIOR => 0,
+            SeniorityLevel::MIDDLE => 1,
+            SeniorityLevel::SENIOR => 2,
+            SeniorityLevel::TECH_MANAGMENT => 3,
+        };
+    }
 }

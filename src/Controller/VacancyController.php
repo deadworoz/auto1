@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\DomainService\VacancySearcher;
+use App\DTO\BestFitRequestDTO;
 use App\Enum\City;
 use App\Enum\Country;
 use App\Enum\VacancySortField;
@@ -47,13 +48,13 @@ class VacancyController extends AbstractBaseController
         return $this->json(['items' => $vacancies]);
     }
 
-    #[Route('/the-best', name:'get_the_best', priority: 1)]
-    public function getBest(): Response
+    #[Route('/the-best', name:'get_the_best', methods: ['GET','POST'], priority: 1)]
+    public function getBest(BestFitRequestDTO $dto, VacancySearcher $searcher): Response
     {
-        $vacancy = $this->vacancyRepository->findById(1);
-        if ($vacancy === null) {
-            throw $this->createNotFoundException('Vacancy not found');
-        }
-        return $this->json($vacancy);
+        $vacancy = $searcher->findBestFit($dto);
+        $response = [
+            'recommendedVacancy' => $vacancy,
+        ];
+        return $this->json($response);
     }
 }

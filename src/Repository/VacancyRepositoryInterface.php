@@ -21,4 +21,9 @@ interface VacancyRepositoryInterface
      * @return Vacancy[]
      */
     public function findByCity(City $city): array;
+
+    /**
+     * @return Vacancy[]
+     */
+    public function findByCriteria(callable $criteria): array;
 }

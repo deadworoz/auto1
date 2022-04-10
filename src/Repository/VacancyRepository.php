@@ -38,7 +38,8 @@ class VacancyRepository implements VacancyRepositoryInterface
             return $row['country'] === $country->getCode();
         };
         
-        return $this->store->getRows($byCountryCallback);
+        $rows = $this->store->getRows($byCountryCallback);
+        return $this->hydrateArray($rows);
     }
 
     /**
@@ -50,6 +51,23 @@ class VacancyRepository implements VacancyRepositoryInterface
             return $row['city'] === $city->getName();
         };
         
-        return $this->store->getRows($byCityCallback);
+        $rows = $this->store->getRows($byCityCallback);
+        return $this->hydrateArray($rows);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function findByCriteria(callable $criteria): array
+    {
+        $rows = $this->store->getRows($criteria);
+        return $this->hydrateArray($rows);
+    }
+
+    private function hydrateArray(array $vacancies): array
+    {
+        return array_map(static function (array $row) {
+            return Vacancy::fromArray($row);
+        }, $vacancies);
     }
 }
