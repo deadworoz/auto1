@@ -14,8 +14,17 @@ class BackedEnumResolver implements ArgumentValueResolverInterface
 {
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
+        $type = $argument->getType();
+        if ($type === null) {
+            return false;
+        }
+
+        if (!class_exists($type)) {
+            return false;
+        }
+
         try {
-            $reflection = new \ReflectionClass($argument->getType());
+            $reflection = new \ReflectionClass($type);
         } catch (\ReflectionException $e) {
             return false;
         }
@@ -27,6 +36,8 @@ class BackedEnumResolver implements ArgumentValueResolverInterface
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         $enumClass = $argument->getType();
+        assert($enumClass !== null);
+
         $name = $argument->getName();
         $value = null;
         foreach ($this->getParameterBags($request) as $bag) {
@@ -35,7 +46,7 @@ class BackedEnumResolver implements ArgumentValueResolverInterface
             }
         }
 
-        if ($value !== null) {
+        if (is_string($value)) {
             return [$this->returnCaseOrThrow($value, $enumClass)];
         }
 
@@ -48,6 +59,7 @@ class BackedEnumResolver implements ArgumentValueResolverInterface
 
     private function returnCaseOrThrow(string $value, string $enumClass): mixed
     {
+        assert(class_exists($enumClass));
         $valueInt = filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
         $value = $valueInt ?? $value;
         $case = $enumClass::tryFrom($value);

@@ -1,4 +1,10 @@
 {
+    "amphp/amp": {
+        "version": "v2.6.2"
+    },
+    "amphp/byte-stream": {
+        "version": "v1.8.1"
+    },
     "behat/behat": {
         "version": "v3.10.0"
     },
@@ -8,8 +14,29 @@
     "behat/transliterator": {
         "version": "v1.5.0"
     },
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.5"
+    },
+    "composer/pcre": {
+        "version": "3.0.0"
+    },
+    "composer/semver": {
+        "version": "3.3.2"
+    },
+    "composer/xdebug-handler": {
+        "version": "3.0.3"
+    },
+    "dnoegel/php-xdg-base-dir": {
+        "version": "v0.1.1"
+    },
     "escapestudios/symfony2-coding-standard": {
         "version": "3.x-dev"
+    },
+    "felixfbecker/advanced-json-rpc": {
+        "version": "v3.2.1"
+    },
+    "felixfbecker/language-server-protocol": {
+        "version": "v1.5.2"
     },
     "friends-of-behat/symfony-extension": {
         "version": "2.3",
@@ -32,6 +59,24 @@
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
+    "netresearch/jsonmapper": {
+        "version": "v4.0.0"
+    },
+    "nikic/php-parser": {
+        "version": "v4.13.2"
+    },
+    "openlss/lib-array2xml": {
+        "version": "1.0.0"
+    },
+    "phpdocumentor/reflection-common": {
+        "version": "2.2.0"
+    },
+    "phpdocumentor/reflection-docblock": {
+        "version": "5.3.0"
+    },
+    "phpdocumentor/type-resolver": {
+        "version": "1.6.1"
+    },
     "psr/cache": {
         "version": "2.0.0"
     },
@@ -43,6 +88,9 @@
     },
     "psr/log": {
         "version": "2.0.0"
+    },
+    "sebastian/diff": {
+        "version": "4.0.4"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.6",
@@ -220,5 +268,14 @@
     },
     "symfony/yaml": {
         "version": "v5.4.3"
+    },
+    "vimeo/psalm": {
+        "version": "4.22.0"
+    },
+    "webmozart/assert": {
+        "version": "1.10.0"
+    },
+    "webmozart/path-util": {
+        "version": "2.3.0"
     }
 }

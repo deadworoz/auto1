@@ -33,6 +33,9 @@ class CsvStore implements StoreInterface
         return $rows;
     }
 
+    /**
+     * @return resource
+     */
     private function getResource()
     {
         $resource = $this->provider->getResource();
@@ -45,6 +48,8 @@ class CsvStore implements StoreInterface
 
     /**
      * @throws CsvStoreException
+     *
+     * @param resource $resource
      */
     private function selectRows($resource, ?callable $selector): array
     {

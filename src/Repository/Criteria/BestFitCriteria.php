@@ -29,7 +29,7 @@ class BestFitCriteria implements VacancyCriteriaInterface
                 break;
             }
 
-            $isSatisfied = $isSatisfied && $criterion($row);
+            $isSatisfied = $criterion($row);
         }
 
         return $isSatisfied;

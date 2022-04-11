@@ -12,7 +12,7 @@ interface PhpResourceProviderInterface
     public function getResource(): mixed;
 
     /**
-     * @param resource $fp
+     * @param resource|false $fp
      */
     public function destroyResource(mixed $fp): bool;
 }

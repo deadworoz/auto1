@@ -9,9 +9,9 @@ use App\ValueObject\SkillList;
 
 class BestFitRequestDTO
 {
-    public $skills = null;
-    public $seniorityLevel = null;
-    public $wantsToLieLowInBruges = null;
+    public mixed $skills = null;
+    public mixed $seniorityLevel = null;
+    public mixed $wantsToLieLowInBruges = null;
 
     public function getSkills(): SkillList
     {

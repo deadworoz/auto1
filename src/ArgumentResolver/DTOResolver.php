@@ -24,8 +24,17 @@ class DTOResolver implements ArgumentValueResolverInterface
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
+        $type = $argument->getType();
+        if ($type === null) {
+            return false;
+        }
+
+        if (!class_exists($type)) {
+            return false;
+        }
+
         try {
-            $reflection = new \ReflectionClass($argument->getType());
+            $reflection = new \ReflectionClass($type);
         } catch (\ReflectionException $e) {
             return false;
         }
@@ -35,12 +44,14 @@ class DTOResolver implements ArgumentValueResolverInterface
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $routeParams = $request->attributes->all();
-        $dto = $this->serializer->deserialize($request->getContent(), $argument->getType(), 'json');
+        $type = $argument->getType();
+        assert($type !== null);
+        $request->attributes->all();
+        $dto = $this->serializer->deserialize($request->getContent(), $type, 'json');
 
         $errors = $this->validator->validate($dto);
         if (count($errors) > 0) {
-            throw new BadRequestHttpException((string) $errors);
+            throw new BadRequestHttpException('Validation errors');
         }
 
         yield $dto;

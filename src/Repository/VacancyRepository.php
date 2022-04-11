@@ -20,7 +20,7 @@ class VacancyRepository implements VacancyRepositoryInterface
 
     public function findById(int $id): ?Vacancy
     {
-        $byIdCallback = static function (array $row) use ($id) {
+        $byIdCallback = static function (array $row) use ($id): bool {
             $rowId = (int) $row['id'];
 
             return $rowId === $id;
@@ -36,7 +36,7 @@ class VacancyRepository implements VacancyRepositoryInterface
      */
     public function findByCountry(Country $country): array
     {
-        $byCountryCallback = static function (array $row) use ($country) {
+        $byCountryCallback = static function (array $row) use ($country): bool {
             return $row['country'] === $country->getCode();
         };
 
@@ -50,7 +50,7 @@ class VacancyRepository implements VacancyRepositoryInterface
      */
     public function findByCity(City $city): array
     {
-        $byCityCallback = static function (array $row) use ($city) {
+        $byCityCallback = static function (array $row) use ($city): bool {
             return $row['city'] === $city->getName();
         };
 
