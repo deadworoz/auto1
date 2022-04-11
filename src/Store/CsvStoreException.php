@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 namespace App\Store;
 
-class CsvStoreException extends StoreException {}
+class CsvStoreException extends StoreException
+{
+}

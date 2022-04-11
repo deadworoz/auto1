@@ -12,20 +12,22 @@ use App\Store\StoreInterface;
 class VacancyRepository implements VacancyRepositoryInterface
 {
     private StoreInterface $store;
-    
+
     public function __construct(StoreInterface $store)
     {
         $this->store = $store;
     }
-    
+
     public function findById(int $id): ?Vacancy
     {
         $byIdCallback = static function (array $row) use ($id) {
             $rowId = (int) $row['id'];
+
             return $rowId === $id;
         };
-        
+
         $vacancyRows = $this->store->getRows($byIdCallback);
+
         return count($vacancyRows) > 0 ? Vacancy::fromArray($vacancyRows[0]) : null;
     }
 
@@ -34,11 +36,12 @@ class VacancyRepository implements VacancyRepositoryInterface
      */
     public function findByCountry(Country $country): array
     {
-        $byCountryCallback = static function (array $row) use ($country) {            
+        $byCountryCallback = static function (array $row) use ($country) {
             return $row['country'] === $country->getCode();
         };
-        
+
         $rows = $this->store->getRows($byCountryCallback);
+
         return $this->hydrateArray($rows);
     }
 
@@ -47,11 +50,12 @@ class VacancyRepository implements VacancyRepositoryInterface
      */
     public function findByCity(City $city): array
     {
-        $byCityCallback = static function (array $row) use ($city) {            
+        $byCityCallback = static function (array $row) use ($city) {
             return $row['city'] === $city->getName();
         };
-        
+
         $rows = $this->store->getRows($byCityCallback);
+
         return $this->hydrateArray($rows);
     }
 
@@ -61,6 +65,7 @@ class VacancyRepository implements VacancyRepositoryInterface
     public function findByCriteria(callable $criteria): array
     {
         $rows = $this->store->getRows($criteria);
+
         return $this->hydrateArray($rows);
     }
 

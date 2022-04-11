@@ -9,25 +9,24 @@ use App\ResourceProvider\PhpResourceProviderInterface;
 class CsvStore implements StoreInterface
 {
     private PhpResourceProviderInterface $provider;
-    
+
     public function __construct(PhpResourceProviderInterface $provider)
     {
         $this->provider = $provider;
     }
-    
+
     /**
      * @inheritdoc
      */
     public function getRows(?callable $selector = null): array
     {
-        $resource = $this->getResource();        
+        $resource = $this->getResource();
 
         try {
             $rows = $this->selectRows($resource, $selector);
-        } catch (\Throwable $e) {                        
+        } catch (\Throwable $e) {
             throw $e;
-        }
-        finally {            
+        } finally {
             $this->provider->destroyResource($resource);
         }
 
@@ -75,7 +74,7 @@ class CsvStore implements StoreInterface
                 $rows[] = $row;
             }
         }
-        
+
         return $rows;
     }
 }

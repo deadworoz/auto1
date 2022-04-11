@@ -7,7 +7,7 @@ namespace App\Repository\Criteria;
 use App\Enum\City;
 
 class CandidateWantsToLieLowInBrugesCriteria implements VacancyCriteriaInterface
-{        
+{
     private bool $isCandidateWantsToLieLowInBruges;
 
     public function __construct(bool $isCandidateWantsToLieLowInBruges)
@@ -23,7 +23,7 @@ class CandidateWantsToLieLowInBrugesCriteria implements VacancyCriteriaInterface
         if (!$this->isCandidateWantsToLieLowInBruges) {
             return true;
         }
-        
+
         return $row['city'] === City::BRUGES->getName();
     }
 }

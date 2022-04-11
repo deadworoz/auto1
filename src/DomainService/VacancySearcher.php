@@ -15,7 +15,7 @@ use App\Repository\Criteria\BestFitCriteria;
 class VacancySearcher
 {
     private VacancyRepositoryInterface $vacancyRepository;
-    
+
     public function __construct(VacancyRepositoryInterface $vacancyRepository)
     {
         $this->vacancyRepository = $vacancyRepository;
@@ -24,12 +24,14 @@ class VacancySearcher
     public function findByCountry(Country $country, VacancySortField $sortBy): array
     {
         $vacancies = $this->vacancyRepository->findByCountry($country);
+
         return $vacancies;
     }
 
     public function findByCity(City $city, VacancySortField $sortBy): array
     {
         $vacancies = $this->vacancyRepository->findByCity($city);
+
         return $vacancies;
     }
 
@@ -40,8 +42,8 @@ class VacancySearcher
             $dto->getSeniorityLevel(),
             $dto->isCandidateWantsToLieLowInBruges(),
         );
-        
-        $shortList = $this->vacancyRepository->findByCriteria($crtiteria);   
+
+        $shortList = $this->vacancyRepository->findByCriteria($crtiteria);
 
         return count($shortList) > 0 ? $shortList[0] : null;
     }

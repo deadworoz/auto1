@@ -10,7 +10,7 @@ use App\ValueObject\SkillList;
 class BestFitCriteria implements VacancyCriteriaInterface
 {
     private array $criteria = [];
-    
+
     public function __construct(SkillList $skills, SeniorityLevel $level, bool $isCandidateWantsToLieLowInBruges)
     {
         $this->criteria[] = new EnoughSkillsCriteria($skills);

@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class VacancyController extends AbstractBaseController
 {
     private VacancyRepositoryInterface $vacancyRepository;
-    
+
     public function __construct(VacancyRepositoryInterface $vacancyRepository)
     {
         $this->vacancyRepository = $vacancyRepository;
@@ -30,7 +30,7 @@ class VacancyController extends AbstractBaseController
         if ($vacancy === null) {
             throw $this->createNotFoundException('Vacancy not found');
         }
-        
+
         return $this->json($vacancy);
     }
 
@@ -38,6 +38,7 @@ class VacancyController extends AbstractBaseController
     public function getByCountry(Country $countryCode, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
         $vacancies = $searcher->findByCountry($countryCode, $sortBy ?? VacancySortField::SALARY);
+
         return $this->json(['items' => $vacancies]);
     }
 
@@ -45,16 +46,18 @@ class VacancyController extends AbstractBaseController
     public function getByCity(City $city, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
         $vacancies = $searcher->findByCity($city, $sortBy ?? VacancySortField::SALARY);
+
         return $this->json(['items' => $vacancies]);
     }
 
-    #[Route('/the-best', name:'get_the_best', methods: ['GET','POST'], priority: 1)]
+    #[Route('/the-best', name:'get_the_best', methods: ['GET', 'POST'], priority: 1)]
     public function getBest(BestFitRequestDTO $dto, VacancySearcher $searcher): Response
     {
         $vacancy = $searcher->findBestFit($dto);
         $response = [
             'recommendedVacancy' => $vacancy,
         ];
+
         return $this->json($response);
     }
 }

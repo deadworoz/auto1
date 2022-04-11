@@ -6,7 +6,6 @@ namespace App\ResourceProvider;
 
 interface PhpResourceProviderInterface
 {
-
     /**
      * @return resource|false
      */

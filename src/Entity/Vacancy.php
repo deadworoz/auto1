@@ -21,9 +21,9 @@ class Vacancy implements \JsonSerializable
     private SeniorityLevel $level;
 
     private City $city;
-    
-    private Money $salary;    
-    
+
+    private Money $salary;
+
     private SkillList $skills;
 
     private CompanySize $companySize;
@@ -35,25 +35,25 @@ class Vacancy implements \JsonSerializable
         string $jobTitle,
         SeniorityLevel $level,
         City $city,
-        Money $salary,        
+        Money $salary,
         SkillList $skills,
         CompanySize $companySize,
         CompanyDomain $companyDomain,
     ) {
         $this->id = $id;
         $this->jobTitle = $jobTitle;
-        $this->level = $level;        
+        $this->level = $level;
         $this->city = $city;
-        $this->salary = $salary;        
+        $this->salary = $salary;
         $this->skills = $skills;
         $this->companySize = $companySize;
         $this->companyDomain = $companyDomain;
     }
 
-    static function fromArray(array $dto): self
+    public static function fromArray(array $dto): self
     {
         return new self(
-            (int)$dto['id'],
+            (int) $dto['id'],
             $dto['jobTitle'],
             SeniorityLevel::from($dto['seniorityLevel']),
             City::from($dto['city']),

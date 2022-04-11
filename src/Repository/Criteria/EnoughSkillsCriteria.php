@@ -9,9 +9,9 @@ use App\ValueObject\SkillList;
 class EnoughSkillsCriteria implements VacancyCriteriaInterface
 {
     private const ENOUGH_COVERAGE_PERCENT = 80;
-    
+
     private SkillList $skills;
-    
+
     public function __construct(SkillList $skills)
     {
         $this->skills = $skills;
@@ -22,7 +22,8 @@ class EnoughSkillsCriteria implements VacancyCriteriaInterface
      */
     public function __invoke(array $row): bool
     {
-        $vacancySkills = SkillList::fromString($row['requiredSkills']);        
+        $vacancySkills = SkillList::fromString($row['requiredSkills']);
+
         return $this->skills->covers($vacancySkills, self::ENOUGH_COVERAGE_PERCENT);
     }
 }

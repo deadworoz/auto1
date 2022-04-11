@@ -8,13 +8,13 @@ class FopenResourceProvider implements PhpResourceProviderInterface
 {
     private string $name;
     private string $mode;
-    
+
     public function __construct(string $resourceName, string $mode = 'r')
     {
         $this->name = $resourceName;
         $this->mode = $mode;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -30,7 +30,7 @@ class FopenResourceProvider implements PhpResourceProviderInterface
     {
         if (is_resource($fp)) {
             return fclose($fp);
-        }        
+        }
 
         return false;
     }

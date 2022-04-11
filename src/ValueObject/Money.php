@@ -10,7 +10,7 @@ final class Money
 {
     private int $value;
     private Currency $currency;
-    
+
     public function __construct(int $value, Currency $currency)
     {
         $this->value = $value;

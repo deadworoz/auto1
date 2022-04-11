@@ -11,16 +11,17 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class BackedEnumResolver implements ArgumentValueResolverInterface
-{    
+{
     public function supports(Request $request, ArgumentMetadata $argument): bool
-    {        
+    {
         try {
             $reflection = new \ReflectionClass($argument->getType());
         } catch (\ReflectionException $e) {
             return false;
         }
 
-        return $reflection->implementsInterface(\BackedEnum::class) && $reflection->implementsInterface(ResolvableEnumInterface::class);
+        return $reflection->implementsInterface(\BackedEnum::class)
+            && $reflection->implementsInterface(ResolvableEnumInterface::class);
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
@@ -28,12 +29,12 @@ class BackedEnumResolver implements ArgumentValueResolverInterface
         $enumClass = $argument->getType();
         $name = $argument->getName();
         $value = null;
-        foreach ($this->getParameterBags($request) as $bag) {            
+        foreach ($this->getParameterBags($request) as $bag) {
             if ($bag->has($name)) {
                 $value = $bag->get($name);
             }
-        }        
-                
+        }
+
         if ($value !== null) {
             return [$this->returnCaseOrThrow($value, $enumClass)];
         }
@@ -41,7 +42,7 @@ class BackedEnumResolver implements ArgumentValueResolverInterface
         if ($argument->isNullable()) {
             return [null];
         }
-        
+
         throw new BadRequestHttpException("Argument {$name} is not nullable");
     }
 

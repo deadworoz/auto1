@@ -23,21 +23,21 @@ class DTOResolver implements ArgumentValueResolverInterface
     }
 
     public function supports(Request $request, ArgumentMetadata $argument): bool
-    {   
+    {
         try {
             $reflection = new \ReflectionClass($argument->getType());
         } catch (\ReflectionException $e) {
             return false;
         }
-        
+
         return $reflection->implementsInterface(ResolvableDTOInterface::class);
     }
 
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
-    {        
+    {
         $routeParams = $request->attributes->all();
         $dto = $this->serializer->deserialize($request->getContent(), $argument->getType(), 'json');
-        
+
         $errors = $this->validator->validate($dto);
         if (count($errors) > 0) {
             throw new BadRequestHttpException((string) $errors);
