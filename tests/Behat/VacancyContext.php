@@ -6,6 +6,7 @@ namespace App\Tests\Behat;
 
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\PyStringNode;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -13,10 +14,14 @@ use Symfony\Component\HttpKernel\KernelInterface;
 final class VacancyContext implements Context
 {
     /** @var KernelInterface */
-    private $kernel;
+    private KernelInterface $kernel;
 
     /** @var Response|null */
-    private $response;
+    private ?Response $response;
+
+    private ?array $parsedJson = null;
+
+    private array $requestBody = [];
 
     public function __construct(KernelInterface $kernel)
     {
@@ -24,11 +29,32 @@ final class VacancyContext implements Context
     }
 
     /**
-     * @When an API client sends a request to :path
+     * @BeforeScenario
      */
-    public function anApiClientSendsARequestTo($path)
+    public function before()
     {
-        $this->response = $this->kernel->handle(Request::create($path, 'GET'));
+        $this->response = null;
+        $this->parsedJson = null;
+        $this->requestBody = [];
+    }
+
+    /**
+     * @When an API client sends a :method request to :path
+     */
+    public function anApiClientSendsARequestTo(string $path, string $method): void
+    {
+        $request = Request::create(
+            $path,
+            $method,
+            $this->requestBody,
+            [],
+            [],
+            $method !== 'GET' ? ['Content-Type' => 'application/json'] : [],
+        );
+        $this->response = $this->kernel->handle($request);
+        if ($this->response !== null && $this->response->getStatusCode() < 300) {
+            $this->parsedJson = json_decode($this->response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        }
     }
 
     /**
@@ -38,7 +64,7 @@ final class VacancyContext implements Context
      *
      * @Then /^the response status code should be (?P<code>\d+)$/
      */
-    public function theResponseStatusCodeShouldBe($codeStr): void
+    public function theResponseStatusCodeShouldBe(string $codeStr): void
     {
         $code = (int) $codeStr;
         if ($this->response === null) {
@@ -49,15 +75,74 @@ final class VacancyContext implements Context
         if ($this->response->getStatusCode() !== $code) {
             throw new \RuntimeException("Unexpected status code. Got {$got}");
         }
-    }
-    
+    }        
+
     /**
-     * @Then the response should be received
+     * @Then the response contains vacancies
      */
-    public function theResponseShouldBeReceived(): void
+    public function theResponseContainsVacancies(): void
     {
-        if ($this->response === null) {
-            throw new \RuntimeException('No response received');
+        $this->throwIfNoJson();
+        $vacancies = $this->parsedJson['items'] ?? [];
+        if (count($vacancies) === 0) {
+            throw new \RuntimeException('No vacancies');
+        }
+    }
+
+    /**
+     * @Then all vacancies contains :city as a city
+     */
+    public function allVacanciesContainsSpecificCity(string $city): void
+    {        
+        $this->throwIfNoJson();
+        $vacancies = $this->parsedJson['items'] ?? [];
+        foreach ($vacancies as $vacancy) {
+            $vacancyCity = $vacancy['city'] ?? null;
+            if ($city !== $vacancyCity) {
+                throw new \RuntimeException('Unexpected city');
+            }
+        }
+    }
+
+    /**
+     * @Then all vacancies contains :countryCode as a country
+     */
+    public function allVacanciesContainsSpecificCountryCode(string $countryCode): void
+    {
+        $this->throwIfNoJson();
+        $vacancies = $this->parsedJson['items'] ?? [];
+        foreach ($vacancies as $vacancy) {
+            $vacancyCountryCode = $vacancy['country'] ?? null;
+            if ($countryCode !== $vacancyCountryCode) {
+                throw new \RuntimeException('Unexpected country');
+            }
+        }
+    }
+
+    /**
+     * @Given the request body is:
+     */
+    public function theRequestBodyIs(PyStringNode $string)
+    {
+        $this->requestBody = json_decode($string->getRaw(), true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * @Then the vacancy exists in the response
+     */
+    public function theVacancyExistsInTheResponse()
+    {
+        $this->throwIfNoJson();        
+        $vacancyId = $this->parsedJson['recommendedVacancy']['id'] ?? null;
+        if ($vacancyId === null) {
+            throw new \RuntimeException('No vacancy');
+        }
+    }
+
+    private function throwIfNoJson(): void
+    {
+        if ($this->parsedJson === null) {
+            throw new \RuntimeException('No json');
         }
     }
 }

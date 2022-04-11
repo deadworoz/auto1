@@ -4,5 +4,14 @@ Feature: Get the best vacancy for a candidate
     I want to get the most interesting position for a candidate with a certain set of skills
 
     Scenario: Requesting the best vacancy
-        When an API client sends a request to "/vacancy/the-best"
-        Then the response should be received    
+        Given the request body is:
+          """
+          {
+              "skills": ["Java", "J2SE", "Spring", "Bamboo", "Docker"],
+              "seniorityLevel": "Senior",
+              "wantsToLieLowInBruges": false
+          }
+          """
+        When an API client sends a POST request to "/vacancy/the-best"
+        Then the response status code should be 200
+        And the vacancy exists in the response
