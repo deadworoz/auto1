@@ -18,29 +18,27 @@ class BestFitRequestDTO implements ResolvableDTOInterface
     #[Assert\All([
         new Assert\Type('string'),
     ])]
-    /**
-     * @var string[]
-     *
-     * @OA\Property(example={"PHP", "Docker", "Symfony", "SOLID", "PHPUnit", "Behat", "REST"})
+    /**     
+     * @OA\Property(
+     *   type="array",
+     *   @OA\Items(type="string"),
+     *   example={"PHP", "Docker", "Symfony", "SOLID", "PHPUnit", "Behat", "REST"}
+     * )
      */
     public mixed $skills = null;
 
     #[Assert\NotBlank()]
     #[Assert\Type('string')]
     #[Assert\Choice(callback: [SeniorityLevel::class, 'choices'])]
-    /**
-     * @var string
-     *
-     * @OA\Property(example="Senior")
+    /**     
+     * @OA\Property(type=SeniorityLevel::class, example="Senior")
      */
     public mixed $seniorityLevel = null;
 
     #[Assert\NotNull()]
     #[Assert\Type('bool')]
-    /**
-     * @var bool
-     *
-     * @OA\Property(example=false)
+    /**     
+     * @OA\Property(type="boolean", example=false)
      */
     public mixed $wantsToLieLowInBruges = null;
 
