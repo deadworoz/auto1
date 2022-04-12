@@ -12,6 +12,6 @@ Feature: Get the best vacancy for a candidate
               "wantsToLieLowInBruges": false
           }
           """
-        When an API client sends a POST request to "/vacancy/the-best"
+        When an API client sends a POST request to "/api/vacancy/the-best"
         Then the response status code should be 200
         And the vacancy exists in the response

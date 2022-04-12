@@ -33,6 +33,11 @@ final class Money
         return $this->value;
     }
 
+    public function getCurrency(): Currency
+    {
+        return $this->currency;
+    }
+
     public function getCurrencyCode(): string
     {
         return $this->currency->getCode();

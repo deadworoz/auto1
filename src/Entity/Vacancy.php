@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Enum\City;
+use App\Enum\Country;
 use App\Enum\CompanyDomain;
 use App\Enum\CompanySize;
 use App\Enum\Currency;
@@ -12,6 +13,8 @@ use App\Enum\SeniorityLevel;
 use App\Enum\VacancySortField;
 use App\ValueObject\Money;
 use App\ValueObject\SkillList;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 class Vacancy implements \JsonSerializable
 {
@@ -89,6 +92,54 @@ class Vacancy implements \JsonSerializable
 
             return $levelComparator($a->level, $b->level);
         };
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getSeniorityLevel(): SeniorityLevel
+    {
+        return $this->level;
+    }
+
+    public function getCountry(): Country
+    {
+        return $this->city->getCountry();
+    }
+
+    public function getCity(): City
+    {
+        return $this->city;
+    }
+
+    public function getSalary(): int
+    {
+        return $this->salary->getValue();
+    }
+
+    public function getCurrency(): Currency
+    {
+        return $this->salary->getCurrency();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRequiredSkills(): array
+    {
+        return $this->skills->toArray();
+    }
+
+    public function getCompanySize(): CompanySize
+    {
+        return $this->companySize;
+    }
+
+    public function getCompanyDomain(): CompanyDomain
+    {
+        return $this->companyDomain;
     }
 
     public function jsonSerialize(): array

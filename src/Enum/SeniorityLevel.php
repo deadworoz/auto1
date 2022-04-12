@@ -2,6 +2,11 @@
 
 namespace App\Enum;
 
+use OpenApi\Annotations as OA;
+
+/**
+ * @OA\Schema()
+ */
 enum SeniorityLevel: string
 {
     case JUNIOR = 'Junior';

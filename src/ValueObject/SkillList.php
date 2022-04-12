@@ -38,6 +38,11 @@ final class SkillList implements \JsonSerializable
         return self::ONE_HUNDREED_PERCENT * (count($this->skills) - count($diff)) / count($other->skills) > $percent;
     }
 
+    public function toArray(): array
+    {
+        return $this->skills;
+    }
+
     /**
      * @param string[] $skills
      */

@@ -10,11 +10,15 @@ use App\DTO\VacancyListDTO;
 use App\Enum\City;
 use App\Enum\Country;
 use App\Enum\VacancySortField;
+use App\Entity\Vacancy;
 use App\Repository\VacancyRepositoryInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/vacancy', name: 'vacancy_', format: 'json')]
+#[Route('/api/vacancy', name: 'vacancy_', format: 'json')]
 class VacancyController extends AbstractBaseController
 {
     private VacancyRepositoryInterface $vacancyRepository;
@@ -25,6 +29,13 @@ class VacancyController extends AbstractBaseController
     }
 
     #[Route('/{id}', name:'by_id', methods: ['GET'], requirements: ['id' => '\d+'])]
+    /**
+     * @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=Vacancy::class)
+     * )
+     */
     public function getById(int $id): Response
     {
         $vacancy = $this->vacancyRepository->findById($id);
