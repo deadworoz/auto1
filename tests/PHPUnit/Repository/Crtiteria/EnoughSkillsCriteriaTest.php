@@ -22,7 +22,7 @@ final class EnoughSkillsCriteriaTest extends TestCase
         $this->assertSame($criteria($row), $isVacancySkillsCovered);
     }
 
-    
+
     public function skillsProvider(): array
     {
         return [
