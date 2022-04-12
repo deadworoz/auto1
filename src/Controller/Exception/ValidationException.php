@@ -7,13 +7,14 @@ namespace App\Controller\Exception;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class ValidationException extends BadRequestHttpException implements \JsonSerializable
 {
     private ConstraintViolationListInterface $constraintViolationList;
-    public function __construct(ConstraintViolationListInterface $constraintViolationList, ?string $message = null)
+    public function __construct(ConstraintViolationListInterface $constraintViolationList, ?string $message = null, \Throwable $previous = null)
     {
-        parent::__construct($message);
+        parent::__construct($message, $previous, Response::HTTP_BAD_REQUEST);
         $this->constraintViolationList = $constraintViolationList;
     }
 
@@ -22,9 +23,10 @@ class ValidationException extends BadRequestHttpException implements \JsonSerial
         $errors = [];
         foreach ($this->constraintViolationList as $violation) {
             $path = $violation->getPropertyPath();
-            $errors[$path] = [
+            $errors[] = [
                 'code' => $violation->getCode(),
-                'msg' => $violation->getMessage(),
+                'name' => $path,
+                'reason' => $violation->getMessage(),
             ];
         }
 
