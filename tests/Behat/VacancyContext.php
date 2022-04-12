@@ -71,12 +71,12 @@ final class VacancyContext implements Context
         if ($this->response === null) {
             throw new \RuntimeException('No response received');
         }
-        
-        $got = $this->response->getStatusCode();        
+
+        $got = $this->response->getStatusCode();
         if ($this->response->getStatusCode() !== $code) {
             throw new \RuntimeException("Unexpected status code. Got {$got}");
         }
-    }        
+    }
 
     /**
      * @Then the response contains vacancies
@@ -94,7 +94,7 @@ final class VacancyContext implements Context
      * @Then all vacancies contains :city as a city
      */
     public function allVacanciesContainsSpecificCity(string $city): void
-    {        
+    {
         $this->throwIfNoJson();
         $vacancies = $this->parsedJson['items'] ?? [];
         foreach ($vacancies as $vacancy) {
@@ -133,7 +133,7 @@ final class VacancyContext implements Context
      */
     public function theVacancyExistsInTheResponse()
     {
-        $this->throwIfNoJson();        
+        $this->throwIfNoJson();
         $vacancyId = $this->parsedJson['recommendedVacancy']['id'] ?? null;
         if ($vacancyId === null) {
             throw new \RuntimeException('No vacancy');
