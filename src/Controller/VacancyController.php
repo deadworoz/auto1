@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\DomainService\VacancySearcher;
 use App\DTO\BestFitRequestDTO;
+use App\DTO\BestFitResponseDTO;
 use App\DTO\VacancyListDTO;
 use App\Enum\City;
 use App\Enum\Country;
@@ -30,10 +31,16 @@ class VacancyController extends AbstractBaseController
 
     #[Route('/{id}', name:'by_id', methods: ['GET'], requirements: ['id' => '\d+'])]
     /**
-     * @OA\Response(
+     * @OA\Get(
+     *   @OA\Response(
      *     response=200,
      *     description="Success",
      *     @Model(type=Vacancy::class)
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Not found"
+     *   )
      * )
      */
     public function getById(int $id): Response
@@ -62,14 +69,45 @@ class VacancyController extends AbstractBaseController
         return $this->json(new VacancyListDTO($vacancies));
     }
 
+    /**
+     * @OA\Post(
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\JsonContent(
+     *       @OA\Property(
+     *         property="skills",
+     *         type="array",
+     *         @OA\Items(type="string"),
+     *         example={"PHP", "Docker", "Symfony", "SOLID", "PHPUnit", "Behat", "REST"}
+     *       ),
+     *       @OA\Property(
+     *         property="seniorityLevel",
+     *         type="string",
+     *         example="Senior",
+     *       ),
+     *       @OA\Property(
+     *         property="wantsToLieLowInBruges",
+     *         type="boolean",
+     *         example=false,
+     *       ),
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=BestFitResponseDTO::class)
+     *   ),
+     *   @OA\Response(
+     *      response=400,
+     *      description="Bad request"
+     *   )
+     * )
+     */
     #[Route('/the-best', name:'get_the_best', methods: ['POST'], priority: 1)]
     public function getBest(BestFitRequestDTO $dto, VacancySearcher $searcher): Response
     {
         $vacancy = $searcher->findBestFit($dto);
-        $response = [
-            'recommendedVacancy' => $vacancy,
-        ];
 
-        return $this->json($response);
+        return $this->json(new BestFitResponseDTO($vacancy));
     }
 }
