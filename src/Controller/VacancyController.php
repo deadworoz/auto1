@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Exception\ValidationException;
 use App\DomainService\VacancySearcher;
 use App\DTO\BestFitRequestDTO;
 use App\DTO\BestFitResponseDTO;
@@ -81,7 +82,8 @@ class VacancyController extends AbstractBaseController
      *   ),
      *   @OA\Response(
      *      response=400,
-     *      description="Bad request"
+     *      description="Bad request",
+     *      @Model(type=ValidationException::class, groups={"dummy_none"})
      *   )
      * )
      */
