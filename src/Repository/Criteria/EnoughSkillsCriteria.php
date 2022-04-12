@@ -8,7 +8,7 @@ use App\ValueObject\SkillList;
 
 class EnoughSkillsCriteria implements VacancyCriteriaInterface
 {
-    private const ENOUGH_COVERAGE_PERCENT = 80;
+    private const ENOUGH_COVERAGE_PERCENT = 74;
 
     private SkillList $skills;
 
