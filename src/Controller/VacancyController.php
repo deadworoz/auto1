@@ -53,6 +53,25 @@ class VacancyController extends AbstractBaseController
         return $this->json($vacancy);
     }
 
+    /**
+     * @OA\Get(
+     *   @OA\Parameter(
+     *     name="country",
+     *     in="path",
+     *     example="DE",
+     *     required=true
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=VacancyListDTO::class)
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Not found"
+     *   )
+     * )
+     */
     #[Route('/by-country/{country}', name:'by_country', methods: ['GET'], requirements: ['country' => '\w\w'])]
     public function getByCountry(Country $country, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
@@ -61,6 +80,25 @@ class VacancyController extends AbstractBaseController
         return $this->json(new VacancyListDTO($vacancies));
     }
 
+    /**
+     * @OA\Get(
+     *   @OA\Parameter(
+     *     name="city",
+     *     in="path",
+     *     example="Bruges",
+     *     required=true
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="Success",
+     *     @Model(type=VacancyListDTO::class)
+     *   ),
+     *   @OA\Response(
+     *      response=404,
+     *      description="Not found"
+     *   )
+     * )
+     */
     #[Route('/by-city/{city}', name:'by_city', methods: ['GET'], requirements: ['city' => '\w+'])]
     public function getByCity(City $city, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
