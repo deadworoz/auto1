@@ -19,6 +19,8 @@ RUN echo "error_reporting = E_ALL" >> /usr/local/etc/php/php.ini \
  && echo "display_errors = On" >> /usr/local/etc/php/php.ini \
  && echo "date.timezone=\"Europe/Berlin\"" >> /usr/local/etc/php/php.ini
 
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 ADD entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
