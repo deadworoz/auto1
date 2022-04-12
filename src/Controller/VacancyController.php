@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\DomainService\VacancySearcher;
 use App\DTO\BestFitRequestDTO;
+use App\DTO\VacancyListDTO;
 use App\Enum\City;
 use App\Enum\Country;
 use App\Enum\VacancySortField;
@@ -39,7 +40,7 @@ class VacancyController extends AbstractBaseController
     {
         $vacancies = $searcher->findByCountry($country, $sortBy ?? VacancySortField::SALARY);
 
-        return $this->json(['items' => $vacancies]);
+        return $this->json(new VacancyListDTO($vacancies));
     }
 
     #[Route('/by-city/{city}', name:'by_city', methods: ['GET'], requirements: ['city' => '\w+'])]
@@ -47,7 +48,7 @@ class VacancyController extends AbstractBaseController
     {
         $vacancies = $searcher->findByCity($city, $sortBy ?? VacancySortField::SALARY);
 
-        return $this->json(['items' => $vacancies]);
+        return $this->json(new VacancyListDTO($vacancies));
     }
 
     #[Route('/the-best', name:'get_the_best', methods: ['POST'], priority: 1)]
