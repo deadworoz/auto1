@@ -4,27 +4,45 @@ declare(strict_types=1);
 
 namespace App\DTO;
 
+use App\ArgumentResolver\ResolvableDTOInterface;
 use App\Enum\SeniorityLevel;
 use App\ValueObject\SkillList;
+use Symfony\Component\Validator\Constraints as Assert;
 
-class BestFitRequestDTO
+class BestFitRequestDTO implements ResolvableDTOInterface
 {
+    #[Assert\NotBlank()]
+    #[Assert\Type('array')]
+    #[Assert\All([
+        new Assert\Type('string'),
+    ])]
     public mixed $skills = null;
+
+    #[Assert\NotBlank()]
+    #[Assert\Type('string')]
+    #[Assert\Choice(callback: [SeniorityLevel::class, 'choices'])]
     public mixed $seniorityLevel = null;
+
+    #[Assert\NotNull()]
+    #[Assert\Type('bool')]
     public mixed $wantsToLieLowInBruges = null;
 
-    public function getSkills(): SkillList
+    public function getSkillList(): SkillList
     {
-        return SkillList::fromString('Java, J2SE, Spring, Bamboo, Docker');
+        assert(is_array($this->skills));
+
+        return SkillList::fromStringArray($this->skills);
     }
 
-    public function getSeniorityLevel(): SeniorityLevel
+    public function getLevel(): SeniorityLevel
     {
-        return SeniorityLevel::SENIOR;
+        assert(is_string($this->seniorityLevel));
+
+        return SeniorityLevel::from($this->seniorityLevel);
     }
 
     public function isCandidateWantsToLieLowInBruges(): bool
     {
-        return true;
+        return filter_var($this->wantsToLieLowInBruges, FILTER_VALIDATE_BOOLEAN);
     }
 }

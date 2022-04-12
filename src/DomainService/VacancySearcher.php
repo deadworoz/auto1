@@ -38,8 +38,8 @@ class VacancySearcher
     public function findBestFit(BestFitRequestDTO $dto): ?Vacancy
     {
         $crtiteria = new BestFitCriteria(
-            $dto->getSkills(),
-            $dto->getSeniorityLevel(),
+            $dto->getSkillList(),
+            $dto->getLevel(),
             $dto->isCandidateWantsToLieLowInBruges(),
         );
 

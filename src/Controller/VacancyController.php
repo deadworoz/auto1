@@ -13,7 +13,7 @@ use App\Repository\VacancyRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/vacancy', name: 'vacancy_')]
+#[Route('/vacancy', name: 'vacancy_', format: 'json')]
 class VacancyController extends AbstractBaseController
 {
     private VacancyRepositoryInterface $vacancyRepository;

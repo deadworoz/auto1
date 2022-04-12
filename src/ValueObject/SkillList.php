@@ -15,9 +15,14 @@ final class SkillList implements \JsonSerializable
 
     public static function fromString(string $skillsStr, string $delimiter = ','): self
     {
+        return self::fromStringArray(explode($delimiter, $skillsStr));
+    }
+
+    public static function fromStringArray(array $skills): self
+    {
         $skills = array_map(static function (string $skill) {
             return trim($skill);
-        }, explode($delimiter, $skillsStr));
+        }, $skills);
 
         return new self($skills);
     }

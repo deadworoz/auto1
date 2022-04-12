@@ -9,6 +9,16 @@ enum SeniorityLevel: string
     case SENIOR = 'Senior';
     case TECH_MANAGMENT = 'Tech management';
 
+    public static function choices(): array
+    {
+        $choices = [];
+        foreach (self::cases() as $case) {
+            $choices[] = $case->value;
+        }
+
+        return $choices;
+    }
+
     public function getTitle(): string
     {
         return $this->value;
@@ -18,7 +28,7 @@ enum SeniorityLevel: string
     {
         $diff = $this->toInt() - $other->toInt();
         return (0 <= $diff) && ($diff <= 1);
-    }
+    }    
 
     private function toInt(): int
     {

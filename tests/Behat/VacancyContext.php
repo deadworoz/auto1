@@ -46,10 +46,11 @@ final class VacancyContext implements Context
         $request = Request::create(
             $path,
             $method,
-            $this->requestBody,
             [],
             [],
-            $method !== 'GET' ? ['Content-Type' => 'application/json'] : [],
+            [],
+            $method !== 'GET' ? ['CONTENT_TYPE' => 'application/json'] : [],
+            $method !== 'GET' ? json_encode($this->requestBody) : null,
         );
         $this->response = $this->kernel->handle($request);
         if ($this->response !== null && $this->response->getStatusCode() < 300) {
