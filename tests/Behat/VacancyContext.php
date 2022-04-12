@@ -170,10 +170,10 @@ final class VacancyContext implements Context
     {
         $this->throwIfNoJson();
         $this->throwIfNoJson();
-        $vacancies = $this->getVacancies();        
+        $vacancies = $this->getVacancies();
         $prevSalary = -1;
         foreach ($vacancies as $vacancy) {
-            $salary = $vacancy['salary'];            
+            $salary = $vacancy['salary'];
             if ($prevSalary <= $salary) {
                 $prevSalary = $salary;
                 continue;
