@@ -6,7 +6,7 @@ namespace App\Repository\Criteria;
 
 use App\Enum\SeniorityLevel;
 
-class MinimumSeniorityLevelCriteria implements VacancyCriteriaInterface
+class CompetentLevelCriteria implements VacancyCriteriaInterface
 {
     private SeniorityLevel $level;
 

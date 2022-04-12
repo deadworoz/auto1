@@ -14,7 +14,7 @@ class BestFitCriteria implements VacancyCriteriaInterface
     public function __construct(SkillList $skills, SeniorityLevel $level, bool $isCandidateWantsToLieLowInBruges)
     {
         $this->criteria[] = new EnoughSkillsCriteria($skills);
-        $this->criteria[] = new MinimumSeniorityLevelCriteria($level);
+        $this->criteria[] = new CompetentLevelCriteria($level);
         $this->criteria[] = new CandidateWantsToLieLowInBrugesCriteria($isCandidateWantsToLieLowInBruges);
     }
 
