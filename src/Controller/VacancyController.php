@@ -14,7 +14,6 @@ use App\Enum\VacancySortField;
 use App\Entity\Vacancy;
 use App\Repository\VacancyRepositoryInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
-use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
