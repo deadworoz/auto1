@@ -17,6 +17,17 @@ final class Money
         $this->currency = $currency;
     }
 
+    public static function getComparator(): callable
+    {
+        return static function (Money $a, Money $b): int {
+            if ($a->currency !== $b->currency) {
+                throw new \RuntimeException('Money conversion is not implemented');
+            }
+
+            return $a->value - $b->value;
+        };
+    }
+
     public function getValue(): int
     {
         return $this->value;

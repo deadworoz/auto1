@@ -24,6 +24,7 @@ class VacancySearcher
     public function findByCountry(Country $country, VacancySortField $sortBy): array
     {
         $vacancies = $this->vacancyRepository->findByCountry($country);
+        usort($vacancies, Vacancy::getComparator($sortBy));
 
         return $vacancies;
     }
@@ -31,6 +32,7 @@ class VacancySearcher
     public function findByCity(City $city, VacancySortField $sortBy): array
     {
         $vacancies = $this->vacancyRepository->findByCity($city);
+        usort($vacancies, Vacancy::getComparator($sortBy));
 
         return $vacancies;
     }
@@ -43,8 +45,10 @@ class VacancySearcher
             $dto->isCandidateWantsToLieLowInBruges(),
         );
 
-        $shortList = $this->vacancyRepository->findByCriteria($crtiteria);
+        $vacancies = $this->vacancyRepository->findByCriteria($crtiteria);
+        usort($vacancies, Vacancy::getComparator(VacancySortField::SALARY));
+        $vacancies = array_reverse($vacancies);
 
-        return count($shortList) > 0 ? $shortList[0] : null;
+        return count($vacancies) > 0 ? $vacancies[0] : null;
     }
 }

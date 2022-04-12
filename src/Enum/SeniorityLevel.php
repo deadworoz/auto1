@@ -19,6 +19,26 @@ enum SeniorityLevel: string
         return $choices;
     }
 
+    /**
+     * @return string[]
+     */
+    public static function orderedValues(): array
+    {
+        $cases = self::cases();
+        usort($cases, self::getComparator());
+
+        return array_map(static function (SeniorityLevel $level): string {
+            return $level->value;
+        }, $cases);
+    }
+
+    public static function getComparator(): callable
+    {
+        return static function (SeniorityLevel $a, SeniorityLevel $b): int {
+            return $a->toInt() - $b->toInt();
+        };
+    }
+
     public function getTitle(): string
     {
         return $this->value;

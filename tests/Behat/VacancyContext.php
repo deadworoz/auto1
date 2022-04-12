@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Behat;
 
+use App\Enum\SeniorityLevel;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
@@ -84,7 +85,7 @@ final class VacancyContext implements Context
     public function theResponseContainsVacancies(): void
     {
         $this->throwIfNoJson();
-        $vacancies = $this->parsedJson['items'] ?? [];
+        $vacancies = $this->getVacancies();
         if (count($vacancies) === 0) {
             throw new \RuntimeException('No vacancies');
         }
@@ -96,7 +97,7 @@ final class VacancyContext implements Context
     public function allVacanciesContainsSpecificCity(string $city): void
     {
         $this->throwIfNoJson();
-        $vacancies = $this->parsedJson['items'] ?? [];
+        $vacancies = $this->getVacancies();
         foreach ($vacancies as $vacancy) {
             $vacancyCity = $vacancy['city'] ?? null;
             if ($city !== $vacancyCity) {
@@ -111,7 +112,7 @@ final class VacancyContext implements Context
     public function allVacanciesContainsSpecificCountryCode(string $countryCode): void
     {
         $this->throwIfNoJson();
-        $vacancies = $this->parsedJson['items'] ?? [];
+        $vacancies = $this->getVacancies();
         foreach ($vacancies as $vacancy) {
             $vacancyCountryCode = $vacancy['country'] ?? null;
             if ($countryCode !== $vacancyCountryCode) {
@@ -140,10 +141,57 @@ final class VacancyContext implements Context
         }
     }
 
+    /**
+     * @Then vacancies are sorted by seniority level
+     */
+    public function vacanciesAreSortedBySeniorityLevel()
+    {
+        $this->throwIfNoJson();
+        $vacancies = $this->getVacancies();
+        $levels = SeniorityLevel::orderedValues();
+        $prevPos = -1;
+        foreach ($vacancies as $vacancy) {
+            $level = $vacancy['seniorityLevel'];
+            $pos = array_search($level, $levels, true);
+            assert($pos !== false);
+            if ($prevPos <= $pos) {
+                $prevPos = $pos;
+                continue;
+            }
+
+            throw new \RuntimeException('Array is not sorted');
+        }
+    }
+
+    /**
+     * @Then vacancies are sorted by salary
+     */
+    public function vacanciesAreSortedBySalary()
+    {
+        $this->throwIfNoJson();
+        $this->throwIfNoJson();
+        $vacancies = $this->getVacancies();        
+        $prevSalary = -1;
+        foreach ($vacancies as $vacancy) {
+            $salary = $vacancy['salary'];            
+            if ($prevSalary <= $salary) {
+                $prevSalary = $salary;
+                continue;
+            }
+
+            throw new \RuntimeException('Array is not sorted');
+        }
+    }
+
     private function throwIfNoJson(): void
     {
         if ($this->parsedJson === null) {
             throw new \RuntimeException('No json');
         }
+    }
+
+    private function getVacancies(): array
+    {
+        return $this->parsedJson['items'] ?? [];
     }
 }

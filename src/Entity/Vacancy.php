@@ -9,6 +9,7 @@ use App\Enum\CompanyDomain;
 use App\Enum\CompanySize;
 use App\Enum\Currency;
 use App\Enum\SeniorityLevel;
+use App\Enum\VacancySortField;
 use App\ValueObject\Money;
 use App\ValueObject\SkillList;
 
@@ -62,6 +63,32 @@ class Vacancy implements \JsonSerializable
             CompanySize::from($dto['companySize']),
             CompanyDomain::from($dto['companyDomain']),
         );
+    }
+
+    public static function getComparator(VacancySortField $sortBy): callable
+    {
+        return match ($sortBy) {
+            VacancySortField::SALARY => static::getSalaryComparator(),
+            VacancySortField::SENIORITY_LEVEL => static::getSeniorityLevelComparator(),
+        };
+    }
+
+    public static function getSalaryComparator(): callable
+    {
+        return static function (Vacancy $a, Vacancy $b): int {
+            $moneyComparator = Money::getComparator();
+
+            return $moneyComparator($a->salary, $b->salary);
+        };
+    }
+
+    public static function getSeniorityLevelComparator(): callable
+    {
+        return static function (Vacancy $a, Vacancy $b): int {
+            $levelComparator = SeniorityLevel::getComparator();
+
+            return $levelComparator($a->level, $b->level);
+        };
     }
 
     public function jsonSerialize(): array
