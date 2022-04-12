@@ -22,13 +22,14 @@ final class EnoughSkillsCriteriaTest extends TestCase
         $this->assertSame($criteria($row), $isVacancySkillsCovered);
     }
 
-
+    
     public function skillsProvider(): array
     {
         return [
             ['PHP, Docker, REST, SQL, ElasticSearch', 'PHP, Docker, REST, SQL, ElasticSearch', true],
             ['PHP, Docker, REST, SQL', 'PHP, Docker, REST, SQL, ElasticSearch', true],
             ['PHP, Docker, SQL', 'PHP, Docker, REST, SQL, ElasticSearch', false],
+            ['Javascript, Java, Rust, PHP, C#, Pascal', 'PHP, Docker, REST, SQL, ElasticSearch', false],
         ];
     }
 }
