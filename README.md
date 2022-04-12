@@ -2,7 +2,16 @@
 
 Please read the following docs:
 - [Introduction to the challenge](docs/challenge.md)
-- [What is included](docs/desc.md)
-- [Installing the application](docs/install.md)
 
-Feel free to remove this file and provide your own documentation once your challenge is done.
+# Installation
+
+To start this simple application, you need to do following steps:
+
+- Run from the project root:
+
+```
+docker-compose build
+docker-compose up -d
+docker-compose run php composer install
+```
+- Open [http://192.200.99.1:8001/](http://192.200.99.1:8001/);
