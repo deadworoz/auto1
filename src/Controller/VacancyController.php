@@ -73,24 +73,7 @@ class VacancyController extends AbstractBaseController
      * @OA\Post(
      *   @OA\RequestBody(
      *     required=true,
-     *     @OA\JsonContent(
-     *       @OA\Property(
-     *         property="skills",
-     *         type="array",
-     *         @OA\Items(type="string"),
-     *         example={"PHP", "Docker", "Symfony", "SOLID", "PHPUnit", "Behat", "REST"}
-     *       ),
-     *       @OA\Property(
-     *         property="seniorityLevel",
-     *         type="string",
-     *         example="Senior",
-     *       ),
-     *       @OA\Property(
-     *         property="wantsToLieLowInBruges",
-     *         type="boolean",
-     *         example=false,
-     *       ),
-     *     )
+     *     @Model(type=BestFitRequestDTO::class)
      *   ),
      *   @OA\Response(
      *     response=200,

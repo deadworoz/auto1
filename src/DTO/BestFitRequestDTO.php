@@ -7,6 +7,8 @@ namespace App\DTO;
 use App\ArgumentResolver\ResolvableDTOInterface;
 use App\Enum\SeniorityLevel;
 use App\ValueObject\SkillList;
+use OpenApi\Annotations as OA;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class BestFitRequestDTO implements ResolvableDTOInterface
@@ -16,17 +18,33 @@ class BestFitRequestDTO implements ResolvableDTOInterface
     #[Assert\All([
         new Assert\Type('string'),
     ])]
+    /**
+     * @var string[]
+     *
+     * @OA\Property(example={"PHP", "Docker", "Symfony", "SOLID", "PHPUnit", "Behat", "REST"})
+     */
     public mixed $skills = null;
 
     #[Assert\NotBlank()]
     #[Assert\Type('string')]
     #[Assert\Choice(callback: [SeniorityLevel::class, 'choices'])]
+    /**
+     * @var string
+     *
+     * @OA\Property(example="Senior")
+     */
     public mixed $seniorityLevel = null;
 
     #[Assert\NotNull()]
     #[Assert\Type('bool')]
+    /**
+     * @var bool
+     *
+     * @OA\Property(example=false)
+     */
     public mixed $wantsToLieLowInBruges = null;
 
+    #[Ignore]
     public function getSkillList(): SkillList
     {
         assert(is_array($this->skills));
@@ -34,6 +52,7 @@ class BestFitRequestDTO implements ResolvableDTOInterface
         return SkillList::fromStringArray($this->skills);
     }
 
+    #[Ignore]
     public function getLevel(): SeniorityLevel
     {
         assert(is_string($this->seniorityLevel));
@@ -41,6 +60,7 @@ class BestFitRequestDTO implements ResolvableDTOInterface
         return SeniorityLevel::from($this->seniorityLevel);
     }
 
+    #[Ignore]
     public function isCandidateWantsToLieLowInBruges(): bool
     {
         return filter_var($this->wantsToLieLowInBruges, FILTER_VALIDATE_BOOLEAN);
