@@ -23,7 +23,7 @@ class VacancyController extends AbstractBaseController
         $this->vacancyRepository = $vacancyRepository;
     }
 
-    #[Route('/{id}', name:'by_id')]
+    #[Route('/{id}', name:'by_id', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function getById(int $id): Response
     {
         $vacancy = $this->vacancyRepository->findById($id);
@@ -34,15 +34,15 @@ class VacancyController extends AbstractBaseController
         return $this->json($vacancy);
     }
 
-    #[Route('/by-country/{countryCode}', name:'by_country')]
-    public function getByCountry(Country $countryCode, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
+    #[Route('/by-country/{country}', name:'by_country', methods: ['GET'], requirements: ['country' => '\w\w'])]
+    public function getByCountry(Country $country, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
-        $vacancies = $searcher->findByCountry($countryCode, $sortBy ?? VacancySortField::SALARY);
+        $vacancies = $searcher->findByCountry($country, $sortBy ?? VacancySortField::SALARY);
 
         return $this->json(['items' => $vacancies]);
     }
 
-    #[Route('/by-city/{city}', name:'by_city')]
+    #[Route('/by-city/{city}', name:'by_city', methods: ['GET'], requirements: ['city' => '\w+'])]
     public function getByCity(City $city, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
         $vacancies = $searcher->findByCity($city, $sortBy ?? VacancySortField::SALARY);
@@ -50,7 +50,7 @@ class VacancyController extends AbstractBaseController
         return $this->json(['items' => $vacancies]);
     }
 
-    #[Route('/the-best', name:'get_the_best', methods: ['GET', 'POST'], priority: 1)]
+    #[Route('/the-best', name:'get_the_best', methods: ['POST'], priority: 1)]
     public function getBest(BestFitRequestDTO $dto, VacancySearcher $searcher): Response
     {
         $vacancy = $searcher->findBestFit($dto);
