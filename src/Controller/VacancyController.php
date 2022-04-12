@@ -72,7 +72,7 @@ class VacancyController extends AbstractBaseController
      *   )
      * )
      */
-    #[Route('/by-country/{country}', name:'by_country', methods: ['GET'], requirements: ['country' => '\w\w'])]
+    #[Route('/by-country/{country}', name:'by_country', methods: ['GET'], requirements: ['country' => '\w+'])]
     public function getByCountry(Country $country, ?VacancySortField $sortBy, VacancySearcher $searcher): Response
     {
         $vacancies = $searcher->findByCountry($country, $sortBy ?? VacancySortField::SALARY);
