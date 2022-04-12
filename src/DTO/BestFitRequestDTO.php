@@ -18,7 +18,7 @@ class BestFitRequestDTO implements ResolvableDTOInterface
     #[Assert\All([
         new Assert\Type('string'),
     ])]
-    /**     
+    /**
      * @OA\Property(
      *   type="array",
      *   @OA\Items(type="string"),
@@ -30,14 +30,14 @@ class BestFitRequestDTO implements ResolvableDTOInterface
     #[Assert\NotBlank()]
     #[Assert\Type('string')]
     #[Assert\Choice(callback: [SeniorityLevel::class, 'choices'])]
-    /**     
+    /**
      * @OA\Property(type=SeniorityLevel::class, example="Senior")
      */
     public mixed $seniorityLevel = null;
 
     #[Assert\NotNull()]
     #[Assert\Type('bool')]
-    /**     
+    /**
      * @OA\Property(type="boolean", example=false)
      */
     public mixed $wantsToLieLowInBruges = null;
