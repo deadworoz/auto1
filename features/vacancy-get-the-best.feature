@@ -15,3 +15,15 @@ Feature: Get the best vacancy for a candidate
         When an API client sends a POST request to "/api/vacancy/the-best"
         Then the response status code should be 200
         And the vacancy exists in the response
+
+    Scenario: Bad request
+        Given the request body is:
+          """
+          {
+              "skills": ["Java", "J2SE", "Spring", "Bamboo", "Docker"],
+              "seniorityLevel": "Cool Bro",
+              "wantsToLieLowInBruges": 1
+          }
+          """
+        When an API client sends a POST request to "/api/vacancy/the-best"
+        Then the response status code should be 400        
